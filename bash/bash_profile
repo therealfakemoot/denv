@@ -1,0 +1,31 @@
+## Source global definitions
+[ -f /etc/bashrc ]; . /etc/bashrc
+
+## Load /etc/profile in non-interactive shells over ssh
+[ -n "$SSH_CLIENT" -a -z "`type -P cat`" ]; source /etc/profile
+
+## Defaults
+HISTTIMEFORMAT="(%m/%d/%y) %T "
+PROMPT_COMMAND='history -a'
+PS1="[\u@\h \W] "
+TERM="xterm-256color"
+EDITOR="emacsclient"
+shopt -s histappend
+shopt -s checkwinsize
+
+## Languages
+GOPATH="$HOME/.go"
+RKTPATH="$HOME/.racket"
+LANGUAGES="$GOPATH/bin:$RKTPATH/bin"
+
+## Path(s)
+GLOBALPATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
+LOCALPATH="$HOME/.local/bin:$HOME/.bin:$HOME/bin"
+PATH="$GLOBALPATH:$LOCALPATH:$LANGUAGES"
+
+## Exports
+export \
+    HISTTIMEFORMAT \
+    PROMPT_COMMAND \
+    PATH GOPATH \
+    TERM PS1
