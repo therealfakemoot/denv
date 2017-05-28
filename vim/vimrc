@@ -1,3 +1,5 @@
+" ~/.vimrc
+
 """ Vim-Plug ====================================
 
 if empty(glob('~/.vim/autoload/plug.vim'))
