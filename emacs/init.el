@@ -108,6 +108,7 @@
   (setenv "GIT_EDITOR" "emacsclient")
   (setenv "PATH" (getenv "PATH"))
   (setenv "PROMPT_COMMAND" "")
+  (setenv "SHELL" (getenv "SHELL"))
   (setenv "TERM" (getenv "TERM")))
 
 (defun eshell-new()
