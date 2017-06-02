@@ -36,9 +36,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (eww-lnum circe all-the-icons xclip undo-tree simple-httpd magit counsel-projectile counsel company-go cmake-ide package-build shut-up epl git commander f dash s cask auto-dictionary auto-compile async systemd rtags racket-mode go-mode gitconfig-mode dart-mode elpy csharp-mode smartparens rainbow-delimiters ibuffer-vc highlight-indent-guides diff-hl package-utils use-package))))
+ )
 
 
 ;;; Repositories ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -47,7 +45,7 @@
 (setq package-user-dir "~/.emacs.d/pkg/")
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")))
+        ("melpa" . "https://stable.melpa.org/packages/")))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -65,25 +63,28 @@
 (unless (server-running-p)
   (server-start))
 
+(defun server-reinstall()
+  "Remove packages, then run server-reload"
+  (interactive)
+  (if (file-exists-p "~/.emacs.d/pkg")
+      (delete-directory "~/.emacs.d/pkg" t))
+  (server-reload))
+
 (defun server-kill()
   "Delete current Emacs server, then kill Emacs"
   (interactive)
   (server-force-delete)
   (kill-emacs))
 
-(defun server-reinstall()
-  "Remove ~/.emacs.d and server-reload"
-  (interactive)
-  (if (file-exists-p "~/.emacs.d")
-      (delete-directory "~/.emacs.d" t))
-  (server-reload))
-
 (defun server-reload()
-  "Reload init file, then install missing packages"
+  "Reload init file"
   (interactive)
-  (if (file-exists-p "~/.emacs.d/init.el")(load-file "~/.emacs.d/init.el")
-    (if (file-exists-p "~/.emacs.el")(load-file "~/.emacs.el")
-      (if (file-exists-p "~/.emacs")(load-file "~/.emacs"))))
+  (if (file-exists-p "~/.emacs.d/init.el")
+      (load-file "~/.emacs.d/init.el")
+    (if (file-exists-p "~/.emacs.el")
+    (load-file "~/.emacs.el")
+      (if (file-exists-p "~/.emacs")
+      (load-file "~/.emacs"))))
   (eshell-exports))
 
 (defun server-stop()
@@ -249,6 +250,7 @@
  delete-selection-mode t
  kept-new-versions 2
  load-prefer-newer t
+ vc-follow-symlinks t
  vc-make-backup-files t
  version-control t)
 
@@ -257,11 +259,12 @@
   (add-hook 'prog-mode-hook 'diff-hl-mode)
   (add-hook 'text-mode-hook 'diff-hl-mode))
 
-(use-package highlight-indent-guides
-  :init
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'fill))
+;; (use-package highlight-indent-guides
+;;   :init
+;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+
+;;   :config
+;;   (setq highlight-indent-guides-method 'fill))
 
 (use-package ibuffer-vc
   :init
@@ -283,6 +286,7 @@
   (add-hook 'markdown-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook 'smartparens-mode)
   (add-hook 'text-mode-hook 'smartparens-mode)
+
   :config
   (setq
    sp-highlight-pair-overlay nil
@@ -308,14 +312,14 @@
   :config
   (setq dart-enable-analysis-server t))
 
+(use-package geiser)
+
 (use-package gitconfig-mode)
 
 (use-package go-mode
   :init
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook (lambda() (setq indent-tabs-mode 1))))
-
-(use-package racket-mode)
 
 (use-package rtags)
 
@@ -337,9 +341,9 @@
 
 (use-package cask)
 
-(use-package cmake-ide
-  :init
-  (cmake-ide-setup))
+;; (use-package cmake-ide
+;;   :init
+;;   (cmake-ide-setup))
 
 (use-package company
   :init
@@ -369,10 +373,6 @@
   (global-set-key (kbd "C-x l")   'counsel-locate)
   (global-set-key (kbd "C-S-o")   'counsel-rhythmbox)
   (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
-
-(use-package counsel-projectile
-  :init
-  (counsel-projectile-on))
 
 (use-package flycheck
   :init
@@ -423,8 +423,6 @@
 
 
 ;;; Misc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package all-the-icons)
 
 (use-package circe
   :init
