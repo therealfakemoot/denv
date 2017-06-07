@@ -6,20 +6,86 @@
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
-(setq
- initial-scratch-message nil
- inhibit-splash-screen t
- inhibit-startup-buffer-menu t)
-
 (fset 'yes-or-no-p 'y-or-n-p)
-(load-theme 'tango-dark)
 (global-visual-line-mode t)
+(show-paren-mode t)
 (xterm-mouse-mode t)
 
+(load-theme 'tango-dark)
 (set-face-attribute
  'default nil
  :family "Monospace" :weight 'normal
  :height 96 :width 'normal)
+
+
+;;; Better Defaults ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq
+ initial-scratch-message nil
+ inhibit-splash-screen t
+ inhibit-startup-buffer-menu t
+
+ prefer-coding-system 'utf-8
+ set-default-coding-systems 'utf-8
+ set-language-environment "UTF-8"
+ set-locale-environment "en_US.UTF-8"
+
+ column-number-mode t
+ visible-bell t
+
+ tab-width 4
+ c-basic-offset 4
+ js-indent-level 2
+ indent-tabs-mode nil
+
+ auto-save-default nil
+ auto-save-file-name-transforms `((".*" "~/.emacs.d/backup/" t))
+ backup-directory-alist `((".*" . "~/.emacs.d/backup/"))
+ delete-by-moving-to-trash t
+ delete-old-versions t
+ delete-selection-mode t
+ kept-new-versions 2
+ load-prefer-newer t
+
+ vc-follow-symlinks t
+ vc-make-backup-files t
+ version-control t
+
+ mouse-yank-at-point t
+ require-final-newline t
+ save-interprogram-paste-before-kill t
+ select-enable-primary nil
+
+ auto-window-vscroll nil
+ mouse-wheel-follow-mouse 't
+ mouse-wheel-progressive-speed nil
+ mouse-wheel-scroll-amount '(3 ((shift) . 3))
+ scroll-conservatively 101
+ scroll-down-aggressively 0.0
+ scroll-margin 0
+ scroll-preserve-screen-position 1
+ scroll-step 1
+ scroll-up-aggressively 0.0
+
+ eshell-cmpl-cycle-completions nil
+ eshell-error-if-no-glob t
+ eshell-hist-ignoredups t
+ eshell-history-size 4096
+ eshell-prefer-lisp-functions nil
+ eshell-prompt-function
+ (lambda nil
+   (concat
+    "[" (user-login-name)"@"(system-name)" "
+    (if (= (length (eshell/pwd))
+           (length (getenv "HOME")))
+        "~"
+      (eshell/basename (eshell/pwd)))
+    "]"
+    (if (= (user-uid) 0) "# " "$ ")))
+
+ eshell-prompt-regexp "^[^#$\n]*[#$] "
+ eshell-save-history-on-exit t
+ eshell-scroll-to-bottom-on-input 'all)
 
 
 ;;; Custom ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -82,9 +148,9 @@
   (if (file-exists-p "~/.emacs.d/init.el")
       (load-file "~/.emacs.d/init.el")
     (if (file-exists-p "~/.emacs.el")
-    (load-file "~/.emacs.el")
+        (load-file "~/.emacs.el")
       (if (file-exists-p "~/.emacs")
-      (load-file "~/.emacs"))))
+          (load-file "~/.emacs"))))
   (eshell-exports))
 
 (defun server-stop()
@@ -133,23 +199,6 @@
 
 
 ;;; Input ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(setq
- mouse-yank-at-point t
- require-final-newline t
- save-interprogram-paste-before-kill t
- select-enable-primary nil
-
- auto-window-vscroll nil
- mouse-wheel-follow-mouse 't
- mouse-wheel-progressive-speed nil
- mouse-wheel-scroll-amount '(3 ((shift) . 3))
- scroll-conservatively 101
- scroll-down-aggressively 0.0
- scroll-margin 0
- scroll-preserve-screen-position 1
- scroll-step 1
- scroll-up-aggressively 0.0)
 
 (global-set-key
  (kbd "C-x C-c")
@@ -214,8 +263,6 @@
 
 ;;; Editor ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(show-paren-mode t)
-
 (add-hook 'lisp-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'text-mode-hook 'linum-mode)
@@ -228,32 +275,6 @@
        (untabify (point-min)(point-max))
      nil)))
 
-(setq
- prefer-coding-system 'utf-8
- set-default-coding-systems 'utf-8
- set-language-environment "UTF-8"
- set-locale-environment "en_US.UTF-8"
-
- column-number-mode t
- visible-bell t
-
- tab-width 4
- c-basic-offset 4
- js-indent-level 2
- indent-tabs-mode nil
-
- auto-save-default nil
- auto-save-file-name-transforms `((".*" "autosave-" t))
- backup-directory-alist `((".*" . "~/.emacs.d/backup/"))
- delete-by-moving-to-trash t
- delete-old-versions t
- delete-selection-mode t
- kept-new-versions 2
- load-prefer-newer t
- vc-follow-symlinks t
- vc-make-backup-files t
- version-control t)
-
 (use-package diff-hl
   :init
   (add-hook 'prog-mode-hook 'diff-hl-mode)
@@ -264,7 +285,7 @@
 ;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
 ;;   :config
-;;   (setq highlight-indent-guides-method 'fill))
+;;   (setq highlight-indent-guides-method 'character))
 
 (use-package ibuffer-vc
   :init
@@ -296,25 +317,13 @@
 
 ;;; Languages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package csharp-mode
-  :init
-  (add-hook 'csharp-mode-hook (lambda() (setq indent-tabs-mode 1))))
-
 (use-package elpy
   :init
   (add-hook 'elpy-mode-hook (lambda() (setq indent-tabs-mode 1)))
   :config
   (elpy-enable))
 
-(use-package dart-mode
-  :init
-  (add-hook 'dart-mode-hook 'flycheck-mode)
-  :config
-  (setq dart-enable-analysis-server t))
-
 (use-package geiser)
-
-(use-package gitconfig-mode)
 
 (use-package go-mode
   :init
@@ -322,8 +331,6 @@
   (add-hook 'go-mode-hook (lambda() (setq indent-tabs-mode 1))))
 
 (use-package rtags)
-
-(use-package systemd)
 
 
 ;;; Utilities ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -338,8 +345,6 @@
   (auto-compile-on-save-mode))
 
 (use-package auto-dictionary)
-
-(use-package cask)
 
 ;; (use-package cmake-ide
 ;;   :init
@@ -394,20 +399,6 @@
   (setq enable-recursive-minibuffers t)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (global-set-key (kbd "<f6>")    'ivy-resume))
-
-(use-package magit
-  :config
-  (setq
-   magit-refresh-status-buffer nil
-   version-control t
-   apropos-do-all t
-   ediff-window-setup-function 'ediff-setup-windows-plain))
-
-(use-package projectile
-  :init
-  (setq projectile-indexing-method 'native))
-
-(use-package simple-httpd)
 
 (use-package swiper
   :init
@@ -470,28 +461,6 @@
 
   (if (file-exists-p "~/.emacs.d/circe.el")
       (load-file "~/.emacs.d/circe.el")))
-
-(setq
- eshell-cmpl-cycle-completions nil
- eshell-error-if-no-glob t
- eshell-hist-ignoredups t
- eshell-history-size 4096
- eshell-prefer-lisp-functions nil
- eshell-save-history-on-exit t
- eshell-scroll-to-bottom-on-input 'all
-
- eshell-prompt-function
- (lambda nil
-   (concat
-    "[" (user-login-name)"@"(system-name)" "
-    (if (= (length (eshell/pwd))
-           (length (getenv "HOME")))
-        "~"
-      (eshell/basename (eshell/pwd)))
-    "]"
-    (if (= (user-uid) 0) "# " "$ ")))
-
- eshell-prompt-regexp "^[^#$\n]*[#$] ")
 
 (add-hook
  'eshell-mode-hook
