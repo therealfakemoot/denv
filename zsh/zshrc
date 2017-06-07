@@ -1,18 +1,15 @@
 # ~/.zshrc
 
-# Path(s)
 GLOBALPATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 LOCALPATH="$HOME/.local/bin:$HOME/.bin:$HOME/bin"
 PATH="$GLOBALPATH:$LOCALPATH:$LANGUAGES"
 
-# Defaults
 EDITOR=emacsclient
 LANG=en_US.UTF-8
 SHELL=$(which zsh)
 TERM="xterm-256color"
 export PATH EDITOR LANG TERM ZSH
 
-# Path to your oh-my-zsh installation.
 ZSH=/home/$(whoami)/.oh-my-zsh
 ZSH_THEME="risto"
 COMPLETION_WAITING_DOTS="true"
