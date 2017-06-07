@@ -24,3 +24,6 @@ I added some "faster" keybinds and a basic theme. `tmux` is perfectly fine witho
 ## vim
 My ideal vim configuration using `plug` to automatically install packages with configuration
 built in. This should be suitable for novice vim users.
+
+## zsh
+Almost a copy/paste from my bashrc, though I'm using `oh-my-zsh`.
