@@ -9,20 +9,18 @@ PATH="$GLOBALPATH:$LOCALPATH:$LANGUAGES"
 EDITOR=emacsclient
 LANG=en_US.UTF-8
 SHELL=$(which zsh)
-TERM=xterm-256color
+TERM="xterm-256color"
+export PATH EDITOR LANG TERM ZSH
 
 # Path to your oh-my-zsh installation.
-ZSH=/home/john/.oh-my-zsh
+ZSH=/home/$(whoami)/.oh-my-zsh
 ZSH_THEME="risto"
-ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
-export PATH EDITOR LANG TERM ZSH
 
 plugins=(git go man)
 source $ZSH/oh-my-zsh.sh
 
-# Disable bracketed paste for tmux
-(( $+TMUX )) && unset zle_bracketed_paste
+[ -n "TMUX" ]; unset zle_bracketed_paste
 
 
 ### Alias ########################################
