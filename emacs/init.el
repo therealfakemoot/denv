@@ -1,4 +1,4 @@
-;;; ~/.emacs.el
+;;; ~/.emacs.d/init.el
 
 ;;; Startup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -20,104 +20,89 @@
 
 ;;; Better Defaults ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq
- initial-scratch-message nil
- inhibit-splash-screen t
- inhibit-startup-buffer-menu t
+(setq initial-scratch-message nil
+      inhibit-splash-screen t
+      inhibit-startup-buffer-menu t
+      column-number-mode t
+      visible-bell t
 
- prefer-coding-system 'utf-8
- set-default-coding-systems 'utf-8
- set-language-environment "UTF-8"
- set-locale-environment "en_US.UTF-8"
+      prefer-coding-system 'utf-8
+      set-default-coding-systems 'utf-8
+      set-language-environment "UTF-8"
+      set-locale-environment "en_US.UTF-8"
 
- column-number-mode t
- visible-bell t
+      tab-width 4
+      c-basic-offset 4
+      js-indent-level 2
+      indent-tabs-mode nil
 
- tab-width 4
- c-basic-offset 4
- js-indent-level 2
- indent-tabs-mode nil
+      auto-save-default nil
+      auto-save-file-name-transforms `((".*" "~/.emacs.d/backup/" t))
+      backup-directory-alist `((".*" . "~/.emacs.d/backup/"))
+      delete-by-moving-to-trash t
+      delete-old-versions t
+      delete-selection-mode t
+      kept-new-versions 2
+      load-prefer-newer t
+      vc-follow-symlinks t
+      vc-make-backup-files t
+      version-control t
 
- auto-save-default nil
- auto-save-file-name-transforms `((".*" "~/.emacs.d/backup/" t))
- backup-directory-alist `((".*" . "~/.emacs.d/backup/"))
- delete-by-moving-to-trash t
- delete-old-versions t
- delete-selection-mode t
- kept-new-versions 2
- load-prefer-newer t
+      mouse-wheel-follow-mouse 't
+      mouse-wheel-progressive-speed nil
+      mouse-wheel-scroll-amount '(3 ((shift) . 3))
+      mouse-yank-at-point t
 
- vc-follow-symlinks t
- vc-make-backup-files t
- version-control t
+      require-final-newline t
+      save-interprogram-paste-before-kill t
+      select-enable-primary nil
 
- mouse-yank-at-point t
- require-final-newline t
- save-interprogram-paste-before-kill t
- select-enable-primary nil
+      auto-window-vscroll nil
+      scroll-conservatively 101
+      scroll-down-aggressively 0.0
+      scroll-margin 0
+      scroll-preserve-screen-position 1
+      scroll-step 1
+      scroll-up-aggressively 0.0
 
- auto-window-vscroll nil
- mouse-wheel-follow-mouse 't
- mouse-wheel-progressive-speed nil
- mouse-wheel-scroll-amount '(3 ((shift) . 3))
- scroll-conservatively 101
- scroll-down-aggressively 0.0
- scroll-margin 0
- scroll-preserve-screen-position 1
- scroll-step 1
- scroll-up-aggressively 0.0
+      eshell-cmpl-cycle-completions nil
+      eshell-error-if-no-glob t
+      eshell-hist-ignoredups t
+      eshell-history-size 4096
+      eshell-prefer-lisp-functions nil
+      eshell-prompt-function
+      (lambda nil
+	(concat
+	 "[" (user-login-name)"@"(system-name)" "
+	 (if (= (length (eshell/pwd))
+		(length (getenv "HOME")))
+	     "~"
+	   (eshell/basename (eshell/pwd)))
+	 "]"
+	 (if (= (user-uid) 0) "# " "$ ")))
 
- eshell-cmpl-cycle-completions nil
- eshell-error-if-no-glob t
- eshell-hist-ignoredups t
- eshell-history-size 4096
- eshell-prefer-lisp-functions nil
- eshell-prompt-function
- (lambda nil
-   (concat
-    "[" (user-login-name)"@"(system-name)" "
-    (if (= (length (eshell/pwd))
-           (length (getenv "HOME")))
-        "~"
-      (eshell/basename (eshell/pwd)))
-    "]"
-    (if (= (user-uid) 0) "# " "$ ")))
-
- eshell-prompt-regexp "^[^#$\n]*[#$] "
- eshell-save-history-on-exit t
- eshell-scroll-to-bottom-on-input 'all)
+      eshell-prompt-regexp "^[^#$\n]*[#$] "
+      eshell-save-history-on-exit t
+      eshell-scroll-to-bottom-on-input 'all)
 
 
 ;;; Custom ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(custom-set-faces)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(custom-set-variables)
 
 
 ;;; Repositories ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'package)
-(setq package-user-dir "~/.emacs.d/pkg/")
-(setq package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://stable.melpa.org/packages/")))
+(setq package-user-dir "~/.emacs.d/pkg/"
+      package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+			 ("melpa" . "https://stable.melpa.org/packages/")))
 (package-initialize)
-
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
 (require 'use-package)
 (setq use-package-always-ensure t)
 (use-package package-utils)
@@ -146,11 +131,7 @@
   "Reload init file"
   (interactive)
   (if (file-exists-p "~/.emacs.d/init.el")
-      (load-file "~/.emacs.d/init.el")
-    (if (file-exists-p "~/.emacs.el")
-        (load-file "~/.emacs.el")
-      (if (file-exists-p "~/.emacs")
-          (load-file "~/.emacs"))))
+      (load-file "~/.emacs.d/init.el"))
   (eshell-exports))
 
 (defun server-stop()
@@ -200,65 +181,56 @@
 
 ;;; Input ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(global-set-key (kbd "C-x x")           'kill-buffer-and-window)
+(global-set-key (kbd "<C-iso-lefttab>") 'previous-buffer)
+(global-set-key (kbd "<backtab>")       'previous-buffer)
+(global-set-key (kbd "<C-tab>")         'next-buffer)
+(global-set-key (kbd "C-x b")           'ibuffer)
+(global-set-key (kbd "C-x C-b")         'ibuffer)
+(global-set-key (kbd "<M-down>")        'windmove-down)
+(global-set-key (kbd "<M-left>")        'windmove-left)
+(global-set-key (kbd "<M-right>")       'windmove-right)
+(global-set-key (kbd "<M-up>")          'windmove-up)
+(global-set-key (kbd "C-c <down>")      'windmove-down)
+(global-set-key (kbd "C-c <left>")      'windmove-left)
+(global-set-key (kbd "C-c <right>")     'windmove-right)
+(global-set-key (kbd "C-c <up>")        'windmove-up)
+(global-set-key (kbd "<mouse-4>") (lambda() (interactive)(scroll-down 4)))
+(global-set-key (kbd "<mouse-5>") (lambda() (interactive)(scroll-up 4)))
+
 (global-set-key
  (kbd "C-x C-c")
- (lambda()
-   (interactive)
+ (lambda() (interactive)
    (if (y-or-n-p "Quit Emacs? ")
        (server-stop))))
 
 (global-set-key
  (kbd "M--")
- (lambda()
-   (interactive)
+ (lambda() (interactive)
    (split-window-vertically)
    (other-window 1 nil)
    (switch-to-next-buffer)))
 
 (global-set-key
  (kbd "M-=")
- (lambda()
-   (interactive)
+ (lambda() (interactive)
    (split-window-horizontally)
    (other-window 1 nil)
    (switch-to-next-buffer)))
 
 (global-set-key
  (kbd "C-c -")
- (lambda()
-   (interactive)
+ (lambda() (interactive)
    (split-window-vertically)
    (other-window 1 nil)
    (switch-to-next-buffer)))
 
 (global-set-key
  (kbd "C-c =")
- (lambda()
-   (interactive)
+ (lambda() (interactive)
    (split-window-horizontally)
    (other-window 1 nil)
    (switch-to-next-buffer)))
-
-(global-set-key (kbd "C-x x") 'kill-buffer-and-window)
-
-(global-set-key (kbd "<C-iso-lefttab>") 'previous-buffer)
-(global-set-key (kbd "<backtab>")       'previous-buffer)
-(global-set-key (kbd "<C-tab>")         'next-buffer)
-
-(global-set-key (kbd "C-x b")   'ibuffer)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-(global-set-key (kbd "<M-down>")    'windmove-down)
-(global-set-key (kbd "<M-left>")    'windmove-left)
-(global-set-key (kbd "<M-right>")   'windmove-right)
-(global-set-key (kbd "<M-up>")      'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-
-(global-set-key (kbd "<mouse-4>") (lambda() (interactive)(scroll-down 4)))
-(global-set-key (kbd "<mouse-5>") (lambda() (interactive)(scroll-up 4)))
 
 
 ;;; Editor ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -283,7 +255,6 @@
 ;; (use-package highlight-indent-guides
 ;;   :init
 ;;   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-
 ;;   :config
 ;;   (setq highlight-indent-guides-method 'character))
 
@@ -307,12 +278,10 @@
   (add-hook 'markdown-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook 'smartparens-mode)
   (add-hook 'text-mode-hook 'smartparens-mode)
-
   :config
-  (setq
-   sp-highlight-pair-overlay nil
-   sp-highlight-wrap-overlay nil
-   sp-highlight-wrap-tag-overlay nil))
+  (setq sp-highlight-pair-overlay nil
+	sp-highlight-wrap-overlay nil
+	sp-highlight-wrap-tag-overlay nil))
 
 
 ;;; Languages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -357,11 +326,10 @@
 
 (use-package company-go
   :init
-  (setq
-   company-tooltip-limit 20
-   company-idle-delay .5
-   company-echo-delay 0
-   company-begin-commands '(self-insert-command)))
+  (setq company-tooltip-limit 20
+	company-idle-delay .5
+	company-echo-delay 0
+	company-begin-commands '(self-insert-command)))
 
 (use-package counsel
   :config
@@ -420,45 +388,36 @@
   (add-hook 'circe-chat-mode-hook 'my-circe-prompt)
   (add-hook 'circe-message-option-functions 'my-circe-message-option-chanserv)
   (add-hook 'lui-mode-hook (lambda() (my-lui-setup)(my-circe-set-margin)))
-
   :config
   (require 'circe-chanop)
   (enable-circe-color-nicks)
-
-  (setq
-   circe-default-part-message ""
-   circe-default-quit-message ""
-   circe-format-server-topic "*** Topic change by {userhost}: {topic-diff}"
-   circe-reduce-lurker-spam t
-   circe-use-cycle-completion t
-   lui-fill-type nil
-   lui-flyspell-alist '((".*" "american"))
-   lui-flyspell-p t
-   lui-time-stamp-format "%H:%M:%S"
-   lui-time-stamp-position 'left-margin)
-
+  (setq circe-default-part-message ""
+	circe-default-quit-message ""
+	circe-format-server-topic "*** Topic change by {userhost}: {topic-diff}"
+	circe-reduce-lurker-spam t
+	circe-use-cycle-completion t
+	lui-fill-type nil
+	lui-flyspell-alist '((".*" "american"))
+	lui-flyspell-p t
+	lui-time-stamp-format "%H:%M:%S"
+	lui-time-stamp-position 'left-margin)
   (defun my-circe-set-margin() (setq left-margin-width 8))
-
   (setf (cdr (assoc 'continuation fringe-indicator-alist)) nil)
   (defun my-lui-setup()
-    (setq
-     fringes-outside-margins t
-     left-margin-width 8
-     word-wrap t
-     wrap-prefix " "))
-
+    (setq fringes-outside-margins t
+	  left-margin-width 8
+	  word-wrap t
+	  wrap-prefix " "))
   (defun my-circe-prompt()
     (lui-set-prompt
      (concat (propertize
               (concat (buffer-name) ">")
               'face 'circe-prompt-face)
              " ")))
-
   (defun my-circe-message-option-chanserv (nick user host command args)
     (when (and (string= "ChanServ" nick)
                (string-match "^\\[#.+?\\]" (cadr args)))
       '((dont-display . t))))
-
   (if (file-exists-p "~/.emacs.d/circe.el")
       (load-file "~/.emacs.d/circe.el")))
 
@@ -466,7 +425,6 @@
  'eshell-mode-hook
  (lambda()
    (eshell-exports)
-
    (add-to-list 'eshell-visual-commands "htop")
    (add-to-list 'eshell-visual-commands "less")
    (add-to-list 'eshell-visual-commands "nano")
@@ -476,7 +434,6 @@
    (add-to-list 'eshell-visual-commands "vi")
    (add-to-list 'eshell-visual-commands "vim")
    (add-to-list 'eshell-visual-commands "watch")
-
    (eshell/alias "clear" "\clear $*")
    (eshell/alias "cr" "cp -ir $*")
    (eshell/alias "df" "df -h $*")
@@ -502,9 +459,8 @@
 
 (use-package eww
   :config
-  (setq
-   browse-url-browser-function 'eww-browse-url
-   shr-blocked-images "http"))
+  (setq browse-url-browser-function 'eww-browse-url
+	shr-blocked-images "http"))
 
 (use-package eww-lnum
   :config
