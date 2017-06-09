@@ -1,5 +1,7 @@
 # ~/.zshrc
 
+unset zle_bracketed_paste
+
 GLOBALPATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 LOCALPATH="$HOME/.local/bin:$HOME/.bin:$HOME/bin"
 PATH="$GLOBALPATH:$LOCALPATH:$LANGUAGES"
@@ -8,16 +10,17 @@ EDITOR=emacsclient
 LANG=en_US.UTF-8
 SHELL=$(which zsh)
 TERM="xterm-256color"
+ZSH=/home/$(whoami)/.oh-my-zsh
 export PATH EDITOR LANG TERM ZSH
 
-ZSH=/home/$(whoami)/.oh-my-zsh
+if [ ! -d $ZSH ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+fi
+
 ZSH_THEME="risto"
 COMPLETION_WAITING_DOTS="true"
-
 plugins=(git go man)
 source $ZSH/oh-my-zsh.sh
-
-[ -n "TMUX" ]; unset zle_bracketed_paste
 
 
 ### Alias ########################################
