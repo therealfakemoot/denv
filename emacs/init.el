@@ -288,7 +288,8 @@
 
 (use-package elpy
   :init
-  (add-hook 'elpy-mode-hook (lambda() (setq indent-tabs-mode 1)))
+  (add-hook 'elpy-mode-hook (lambda() (setq tab-width 4
+                                            indent-tabs-mode 1)))
   :config
   (elpy-enable))
 
@@ -297,7 +298,8 @@
 (use-package go-mode
   :init
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (add-hook 'go-mode-hook (lambda() (setq indent-tabs-mode 1))))
+  (add-hook 'go-mode-hook (lambda() (setq tab-width 4
+                                          indent-tabs-mode 1))))
 
 (use-package rtags)
 
