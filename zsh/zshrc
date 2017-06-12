@@ -82,3 +82,15 @@ alias ss="scrot -s ~/Pictures/'Screenshot-%Y%m%d'.png"
 ## tar
 alias mktar="tar -zcvf archive_`date +%Y%m%d`-`date +%H%M%S`.tar.gz"
 alias untar="tar -vxf"
+
+
+### Extras #######################################
+
+mkcd() {
+    mkdir -vp $1
+    cd $1
+}
+
+weather() {
+    curl http://wttr.in/$1
+}
