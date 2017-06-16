@@ -3,4 +3,4 @@
 MAINTAINER jcmdln
 
 FROM alpine:latest
-RUN apk update -y && apk upgrade -y && apk add --update seafile
+RUN apk update -y && apk upgrade -y && apk add --update nextcloud
