@@ -1,26 +1,41 @@
 # ~/.config/i3/config
 
-## Default modifier key: <Win>
+## Set default modifier key to <Win>
 set $mod Mod4
 
 ## Start program launcher
 bindsym $mod+d exec dmenu_run
-#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
-## start a terminal
+## Start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
-## kill focused window
-bindsym $mod+Shift+q kill
+## Reload i3
+set $mode_reload Reload i3 config (r), Live restart of i3 (Shift+r)
+mode "$mode_reload" {
+     bindsym r reload
+     bindsym Shift+r restart
 
-## reload the configuration file
-bindsym $mod+Shift+c reload
+     bindsym Return mode "default"
+     bindsym Escape mode "default"
+}
+bindsym $mod+Shift+r mode "$mode_reload"
 
-## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+## System mode prompt
+set $Locker xautolock -time 10 -locker "i3lock -i 'background_image.png'" && sleep 1
+set $mode_system System Lock (l), logout (Shift+l), Suspend (s), Hibernate (h), Reboot (r), Shutdown (Shift+s)
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym Shift+l exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
-## exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Pause mode "$mode_system"
 
 
 ### Movement #####################################
@@ -96,32 +111,33 @@ bindsym $mod+Shift+0 move container to workspace 10
 ## Drag floating windows with Mouse+$mod
 floating_modifier $mod
 
-## resize window (you can also use the mouse for that)
+## Resize window
 mode "resize" {
-     # Resize focused frame
-     bindsym j resize shrink width 10 px or 10 ppt
-     bindsym k resize grow height 10 px or 10 ppt
-     bindsym l resize shrink height 10 px or 10 ppt
-     bindsym semicolon resize grow width 10 px or 10 ppt
-     bindsym Left resize shrink width 10 px or 10 ppt
-     bindsym Down resize grow height 10 px or 10 ppt
-     bindsym Up resize shrink height 10 px or 10 ppt
-     bindsym Right resize grow width 10 px or 10 ppt
+    bindsym j resize shrink width 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym l resize shrink height 10 px or 10 ppt
+    bindsym semicolon resize grow width 10 px or 10 ppt
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
 
-     # back to normal: Enter or Escape
-     bindsym Return mode "default"
-     bindsym Escape mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 
 bindsym $mod+r mode "resize"
 
+## kill focused window
+bindsym $mod+Shift+q kill
+
 
 ### Appearance ###################################
 
-# Window title font
+## Window title font
 font pango:monospace 8
 
-# Start i3bar
+## Start i3bar
 bar {
     status_command i3status
 }
