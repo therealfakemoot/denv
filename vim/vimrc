@@ -24,14 +24,18 @@ Plug 'tpope/vim-sensible'              " Sensible Defaults
 
 """ Input =======================================
 
-set mouse=a                            " Mouse Support
-
 let mapleader = ','
 
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+" Fold Mappings
+inoremap <leader>z <C-O>za
+nnoremap <leader>z za
+onoremap <leader>z <C-C>za
+vnoremap <leader>z zf
 
 " Use <leader>/ to clear search highlight
 nmap <silent> <leader>/ :nohlsearch<CR>
@@ -85,15 +89,6 @@ Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
 """ Languages ===================================
 
 Plug 'sheerun/vim-polyglot'            " Language Support
-Plug 'jcmdln/vim-polyglot'
-
-Plug 'wlangstroth/vim-racket'
-  command! -nargs=* RktDocs :silent execute "!raco docs" '<args>' | redraw!
-  command! RktExe  execute "!raco exe -v %"
-  command! RktREPL execute "!racket -il xrepl"
-  command! RktMake execute "!raco make -j $(grep -c ^processor /proc/cpuinfo) -v %"
-  command! RktRun  execute "!racket %"
-  command! -nargs=* RktDocs :silent execute "!raco docs" '<args>' | redraw!
 
 Plug 'scrooloose/syntastic'            " Syntax checking hacks for vim
   nmap <leader>c :SyntasticCheck<CR>

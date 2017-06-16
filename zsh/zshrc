@@ -29,7 +29,7 @@ TERM="xterm-256color"
 DARTPUB="$HOME/.pub-cache/bin"
 
 GOPATH="$HOME/.go"
-[ -d $HOME/.local/go ]; export GOROOT="$HOME/.local/go"
+export GOROOT="/usr/lib/go"
 
 PROGPATH="$DARTPUB:$GOPATH"
 
