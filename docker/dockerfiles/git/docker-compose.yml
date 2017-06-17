@@ -1,24 +1,33 @@
 # Git Server
 
+gogs_data:
+  image: 'busybox'
+  tty: true
+  container_name: 'git-store'
+  volumes:
+    - '/var/gogs/data:/data'
+    - '/var/gogs/mysql:/var/lib/mysql'
+
 gogs:
   image: "gogs/gogs:latest"
-  container_name: "gogs"
-  restart: always
+  container_name: "git"
+  restart: 'always'
   ports:
-    - "8010:3000"
-  volumes:
-    - "./data/gogs:/data"
+    - "8020:3000"
+    - "8022:22"
   links:
-    - "postgresql"
+    - "postgres"
+  volumes_from:
+    - 'gogs_data'
 
-postgresql:
-  image: "kiasaki/alpine-postgres:latest"
-  container_name: "gogs-psql"
-  restart: always
-  ports:
-    - "8011:5432"
-  volumes:
-    - "./data/postgresql:/var/lib/postgresql"
+postgres:
+  image: "postgres:latest"
+  container_name: "git-db"
+  restart: 'always'
+  expose:
+    - "5432"
+  volumes_from:
+    - 'gogs_data'
   environment:
     - "POSTGRES_DB=gogs"
     - "POSTGRES_USER=gogs"
