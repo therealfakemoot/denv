@@ -15,15 +15,25 @@ Emacs() {
     ln -vis $(pwd)/emacs/init.el ~/.emacs.d/init.el
 }
 
-I3()    {
+I3() {
     if [ -z ~/.config/i3 ]; then mkdir -vpi ~/.config/i3; fi
     ln -vis $(pwd)/i3/config ~/.config/i3/config
 }
 
-Irssi() { echo "This isn't setup yet... Sorry!" }
-Tmux()  { ln -vis $(pwd)/tmux/tmux.conf ~/.tmux.conf }
-Vim()   { ln -vis $(pwd)/vim/vimrc ~/.vimrc }
-Zsh()   { ln -vis $(pwd)/zsh/zshrc ~/.zshrc }
+Irssi() {
+    echo "This isn't setup yet... Sorry!"
+}
+
+Tmux() {
+    ln -vis $(pwd)/tmux/tmux.conf ~/.tmux.conf
+}
+Vim() {
+    ln -vis $(pwd)/vim/vimrc ~/.vimrc
+}
+
+Zsh() {
+    ln -vis $(pwd)/zsh/zshrc ~/.zshrc
+}
 
 if [ -z $1 ]; then
     echo "No utilities specified! Exiting..."
@@ -44,7 +54,6 @@ else
 		$Elinks
 		$Emacs
 		$I3
-		$Irssi
 		$Tmux
 		$Vim
 		$Zsh
