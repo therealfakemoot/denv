@@ -6,15 +6,20 @@ Bash() {
 }
 
 Elinks() {
-    if [ -z ~/.elinks ]; then
-	mkdir -vpi ~/.elinks
-    fi
-
+    if [ -z ~/.elinks ]; then mkdir -vpi ~/.elinks; fi
     ln -vis $(pwd)/elinks/elinks.conf ~/.elinks/elinks.conf
 }
 
-Emacs() { ln -vis $(pwd)/emacs/init.el ~/.emacs.d/init.el }
-I3()    { ln -vis $(pwd)/i3/config ~/.config/i3/config }
+Emacs() {
+    if [ -z ~/.emacs.d ]; then mkdir -vpi ~/.emacs.d/; fi
+    ln -vis $(pwd)/emacs/init.el ~/.emacs.d/init.el
+}
+
+I3()    {
+    if [ -z ~/.config/i3 ]; then mkdir -vpi ~/.config/i3; fi
+    ln -vis $(pwd)/i3/config ~/.config/i3/config
+}
+
 Irssi() { echo "This isn't setup yet... Sorry!" }
 Tmux()  { ln -vis $(pwd)/tmux/tmux.conf ~/.tmux.conf }
 Vim()   { ln -vis $(pwd)/vim/vimrc ~/.vimrc }
