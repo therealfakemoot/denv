@@ -7,23 +7,20 @@ if [ -z $1 ]; then
 else
     case $@ in
 	bash)
-	    ln -sf $(pwd)/bash/bashrc ~/.bashrc \
-		&& echo "Done!"
+	    ln -vis $(pwd)/bash/bashrc       ~/.bashrc
+	    ln -vis $(pwd)/bash/bash_profile ~/.bash_profile
 	    ;;
 
 	elinks)
-	    ln -sf $(pwd)/elinks/elinks.conf ~/.elinks/elinks.conf \
-		&& echo "Done!"
+	    ln -vis $(pwd)/elinks/elinks.conf ~/.elinks/elinks.conf
 	    ;;
 
 	emacs)
-	    ln -sf $(pwd)/emacs/init.el ~/.emacs.d/init.el \
-		&& echo "Done!"
+	    ln -vis $(pwd)/emacs/init.el ~/.emacs.d/init.el
 	    ;;
 
 	i3)
-	    ln -sf $(pwd)/i3/config ~/.config/i3/config \
-		&& echo "Done!"
+	    ln -vis $(pwd)/i3/config ~/.config/i3/config
 	    ;;
 
 	irssi)
@@ -31,29 +28,25 @@ else
 	    ;;
 
 	tmux)
-	    ln -sf $(pwd)/tmux/tmux.conf ~/.tmux.conf \
-		&& echo "Done!"
+	    ln -vis $(pwd)/tmux/tmux.conf ~/.tmux.conf
 	    ;;
 
 	vim)
-	    ln -sf $(pwd)/vim/vimrc ~/.vimrc \
-		&& echo "Done!"
+	    ln -vis $(pwd)/vim/vimrc ~/.vimrc
 	    ;;
 
 	zsh)
-	    ln -sf $(pwd)/zsh/zshrc ~/.zshrc \
-		&& echo "Done!"
+	    ln -vis $(pwd)/zsh/zshrc ~/.zshrc
 	    ;;
 
 	all|--all)
-	    echo "Installing all configs..." \
-		&& ln -sf $(pwd)/bash/bashrc        ~/.bashrc \
-		&& ln -sf $(pwd)/elinks/elinks.conf ~/.elinks/elinks.conf \
-		&& ln -sf $(pwd)/emacs/init.el      ~/.emacs.d/init.el \
-		&& ln -sf $(pwd)/i3/config          ~/.config/i3/config \
-		&& ln -sf $(pwd)/tmux/tmux.conf     ~/.tmux.conf \
-		&& ln -sf $(pwd)/vim/vimrc          ~/.vimrc \
-		&& ln -sf $(pwd)/zsh/zshrc          ~/.zshrc
+	    ln -vis $(pwd)/bash/bashrc        ~/.bashrc
+	    ln -vis $(pwd)/elinks/elinks.conf ~/.elinks/elinks.conf
+	    ln -vis $(pwd)/emacs/init.el      ~/.emacs.d/init.el
+	    ln -vis $(pwd)/i3/config          ~/.config/i3/config
+	    ln -vis $(pwd)/tmux/tmux.conf     ~/.tmux.conf
+	    ln -vis $(pwd)/vim/vimrc          ~/.vimrc
+	    ln -vis $(pwd)/zsh/zshrc          ~/.zshrc
 	    ;;
 
 	?|help|--help)
