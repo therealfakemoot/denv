@@ -4,8 +4,18 @@ MAINTAINER jcmdln
 
 FROM alpine:latest
 RUN apk update -y && apk upgrade -y
-RUN apk install go
-RUN go get github.com/gogits/gogs
-RUN cd $GOPATH/src/github.com/gogits.com/gogs && go build && ./gogs web
 
-# Gogs will need to be downloaded from source
+# Postgresql
+RUN apk update -y && apk upgrade -y && apk add --update postgresql
+RUN psql -c "create user gogs;"
+RUN psql -c "alter user gogs with password 'EXAMPLE';"
+RUN psql -c "create database gogs;"
+RUN psql -c "grant all priveleges on gogs to gogs;"
+
+
+# Gogs 
+RUN apk update -y && apk upgrade -y && apk add --update go wget \
+&& go get github.com/gogits/gogs \
+&& cd $GOPATH/src/github.com/gogits.com/gogs && go build \
+&& mkdir -p ./custom/conf/app.ini && wget
+RUN ./gogs web
