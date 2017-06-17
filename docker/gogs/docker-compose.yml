@@ -9,7 +9,7 @@ gogs_data:
     - '/var/gogs/postgres:/var/lib/postgres'
 
 gogs:
-  image: "gogs/gogs:latest"
+  image: "gogs/gogs"
   container_name: "gogs-srv"
   restart: 'always'
   ports:
@@ -21,7 +21,7 @@ gogs:
     - 'gogs_data'
 
 postgres:
-  image: "postgres:latest"
+  image: "postgres"
   container_name: "gogs-db"
   restart: 'always'
   expose:
