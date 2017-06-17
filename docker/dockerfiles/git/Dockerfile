@@ -17,5 +17,6 @@ RUN psql -c "grant all priveleges on gogs to gogs;"
 RUN apk update -y && apk upgrade -y && apk add --update go wget \
 && go get github.com/gogits/gogs \
 && cd $GOPATH/src/github.com/gogits.com/gogs && go build \
-&& mkdir -p ./custom/conf/app.ini && wget
+&& mkdir -p ./custom/conf/
+ADD app.ini $GOPATH/src/github.com/gogits.com/gogs/custom/conf/app.ini
 RUN ./gogs web
