@@ -1,61 +1,58 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-input=$@
+Bash() {
+    ln -vis $(pwd)/bash/bashrc       ~/.bashrc
+    ln -vis $(pwd)/bash/bash_profile ~/.bash_profile
+}
+
+Elinks() {
+    if [ -z ~/.elinks ]; then
+	mkdir -vpi ~/.elinks
+    fi
+
+    ln -vis $(pwd)/elinks/elinks.conf ~/.elinks/elinks.conf
+}
+
+Emacs() { ln -vis $(pwd)/emacs/init.el ~/.emacs.d/init.el }
+I3()    { ln -vis $(pwd)/i3/config ~/.config/i3/config }
+Irssi() { echo "This isn't setup yet... Sorry!" }
+Tmux()  { ln -vis $(pwd)/tmux/tmux.conf ~/.tmux.conf }
+Vim()   { ln -vis $(pwd)/vim/vimrc ~/.vimrc }
+Zsh()   { ln -vis $(pwd)/zsh/zshrc ~/.zshrc }
 
 if [ -z $1 ]; then
     echo "No utilities specified! Exiting..."
 else
-    case $@ in
-	bash)
-	    ln -vis $(pwd)/bash/bashrc       ~/.bashrc
-	    ln -vis $(pwd)/bash/bash_profile ~/.bash_profile
-	    ;;
+    for flag in $@; do
+	case $flag in
+	    bash)   $Bash;;
+	    elinks) $Elinks;;
+	    emacs)  $Emacs;;
+	    i3)     $I3;;
+	    irssi)  $Irssi;;
+	    tmux)   $Tmux;;
+	    vim)    $Vim;;
+	    zsh)    $Zsh;;
 
-	elinks)
-	    ln -vis $(pwd)/elinks/elinks.conf ~/.elinks/elinks.conf
-	    ;;
+	    all)
+		$Bash
+		$Elinks
+		$Emacs
+		$I3
+		$Irssi
+		$Tmux
+		$Vim
+		$Zsh
+		;;
 
-	emacs)
-	    ln -vis $(pwd)/emacs/init.el ~/.emacs.d/init.el
-	    ;;
+	    help|--help)
+		curl -sSfL https://github.com/jcmdln/denv/raw/master/Readme.md | cat
+		;;
 
-	i3)
-	    ln -vis $(pwd)/i3/config ~/.config/i3/config
-	    ;;
-
-	irssi)
-	    echo "This isn't setup yet... Sorry!"
-	    ;;
-
-	tmux)
-	    ln -vis $(pwd)/tmux/tmux.conf ~/.tmux.conf
-	    ;;
-
-	vim)
-	    ln -vis $(pwd)/vim/vimrc ~/.vimrc
-	    ;;
-
-	zsh)
-	    ln -vis $(pwd)/zsh/zshrc ~/.zshrc
-	    ;;
-
-	all|--all)
-	    ln -vis $(pwd)/bash/bashrc        ~/.bashrc
-	    ln -vis $(pwd)/elinks/elinks.conf ~/.elinks/elinks.conf
-	    ln -vis $(pwd)/emacs/init.el      ~/.emacs.d/init.el
-	    ln -vis $(pwd)/i3/config          ~/.config/i3/config
-	    ln -vis $(pwd)/tmux/tmux.conf     ~/.tmux.conf
-	    ln -vis $(pwd)/vim/vimrc          ~/.vimrc
-	    ln -vis $(pwd)/zsh/zshrc          ~/.zshrc
-	    ;;
-
-	?|help|--help)
-	    curl -sSfL https://github.com/jcmdln/denv/raw/master/Readme.md | cat
-	    ;;
-
-	*)
-	    echo "You entered something invalid. Exiting..."
-	    exit
-	    ;;
-    esac
+	    *)
+		echo "You entered something invalid. Exiting..."
+		exit
+		;;
+	esac
+    done
 fi
