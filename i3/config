@@ -5,7 +5,7 @@ set $mod Mod4
 
 ## Start program launcher
 bindsym $mod+d exec dmenu_run
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 ## Start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
