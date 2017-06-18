@@ -22,8 +22,8 @@ mode "$mode_reload" {
 bindsym $mod+Shift+r mode "$mode_reload"
 
 ## System mode prompt
-set $Locker xautolock -time 10 -locker "i3lock -i 'background_image.png'" && sleep 1
-set $mode_system System Lock (l), logout (Shift+l), Suspend (s), Hibernate (h), Reboot (r), Shutdown (Shift+s)
+set $Locker i3lock -c 3f3f3f -n && sleep 1
+set $mode_system Lock (l), Logout (Shift+l), Suspend (s), Hibernate (h), Reboot (r), Shutdown (Shift+s)
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym Shift+l exec --no-startup-id i3-msg exit, mode "default"
