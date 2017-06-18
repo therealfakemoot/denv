@@ -22,7 +22,7 @@ mode "$mode_reload" {
 bindsym $mod+Shift+r mode "$mode_reload"
 
 ## System mode prompt
-set $Locker xset dpms 10 && i3lock -c 3f3f3f -n && xset -dpms
+set $Locker xset s 10 dpms 10 && i3lock -c 3f3f3f -n && xset s off -dpms
 set $mode_system Lock (l), Logout (Shift+l), Suspend (s), Hibernate (h), Reboot (r), Shutdown (Shift+s)
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
