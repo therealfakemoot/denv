@@ -8,7 +8,7 @@ bindsym $mod+d exec dmenu_run
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 ## Start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec gnome-terminal
 
 ## Reload i3
 set $mode_reload Reload i3 config (r), Live restart of i3 (Shift+r)
@@ -125,7 +125,6 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-
 bindsym $mod+r mode "resize"
 
 ## kill focused window
