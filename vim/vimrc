@@ -46,16 +46,6 @@ nmap <silent> <leader>/ :nohlsearch<CR>
 set pastetoggle=<F2>
 set listchars=tab:\|.,trail:.,extends:#,nbsp:.
 
-Plug 'itchyny/lightline.vim'
-  if !has('gui_running')
-    set t_Co=256
-  endif
-
-Plug 'edkolev/tmuxline.vim'            " Simple tmux statusline generator
-  let g:tmuxline_powerline_separators = 0
-  let g:tmuxline_preset = 'tmux'
-  let g:tmuxline_theme = 'lightline'
-
 Plug 'universal-ctags/ctags'           " ctags implementation
 
 Plug 'majutsushi/tagbar'               " Displays tags in a window
@@ -136,11 +126,19 @@ Plug 'junegunn/limelight.vim'          " Hyperfocus-writing in Vim
 
 """ Theme =======================================
 
-try
-  colorscheme mushroom
-  set background=dark
-catch
-endtry
+if !has('gui_running')
+  try
+    colorscheme mushroom
+    set background=dark
+  catch
+  endtry
+else
+  try
+    colorscheme slate
+    set background=dark
+  catch
+  endtry
+endif
 
 
 """ Version Control System ======================

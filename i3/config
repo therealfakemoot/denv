@@ -8,7 +8,7 @@ bindsym $mod+d exec dmenu_run
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 ## Start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec gnome-terminal
 
 ## Reload i3
 set $mode_reload Reload i3 config (r), Live restart of i3 (Shift+r)
@@ -22,8 +22,8 @@ mode "$mode_reload" {
 bindsym $mod+Shift+r mode "$mode_reload"
 
 ## System mode prompt
-set $Locker xautolock -time 10 -locker "i3lock -i 'background_image.png'" && sleep 1
-set $mode_system System Lock (l), logout (Shift+l), Suspend (s), Hibernate (h), Reboot (r), Shutdown (Shift+s)
+set $Locker xset s 10 dpms 10 && i3lock -c 3f3f3f -n && xset s off -dpms
+set $mode_system Lock (l), Logout (Shift+l), Suspend (s), Hibernate (h), Reboot (r), Shutdown (Shift+s)
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym Shift+l exec --no-startup-id i3-msg exit, mode "default"
@@ -125,7 +125,6 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-
 bindsym $mod+r mode "resize"
 
 ## kill focused window
