@@ -70,7 +70,7 @@ Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
   let g:ctrlp_cmd = 'CtrlP'
   let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-    \ 'file': '\v\.(exe|so|dll)$',
+    \ 'file': '\v\.(exe|so|dll|pyc|pyo)$',
     \ 'link': 'some_bad_symbolic_links',
   \ }
   let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
@@ -80,23 +80,32 @@ Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
 
 Plug 'sheerun/vim-polyglot'            " Language Support
 
+
 Plug 'scrooloose/syntastic'            " Syntax checking hacks for vim
   nmap <leader>c :SyntasticCheck<CR>
   set statusline+=%#warningmsg#
   set statusline+=%*
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_auto_loc_list = 1
-  let g:syntastic_check_on_open = 1
+  let g:syntastic_check_on_open = 0
   let g:syntastic_check_on_wq = 0
   let g:syntastic_error_symbol="S>"
   let g:syntastic_style_error_symbol="E>"
   let g:syntastic_warning_symbol="W>"
   let g:syntastic_style_warning_symbol="W>"
 
+  noremap <Leader>c :ccl <bar> lcl<CR>
+
 Plug 'fatih/vim-go'                    " Go development plugin for Vim
+  let g:syntastic_go_checkers = ['go', 'golint', 'errcheck', 'gov']
+
+  let g:go_fmt_command = "gofmt"
+
   let g:go_auto_type_info = 1
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
+  let g:go_highlight_types = 1
+  let g:go_highlight_fields = 1
   let g:go_highlight_structs = 1
   let g:go_highlight_interfaces = 1
   let g:go_highlight_operators = 1
@@ -123,22 +132,17 @@ Plug 'ervandew/supertab'               " Vim insert mode completions with Tab
 Plug 'tpope/vim-surround'              " Quoting/Parenthesizing made simple
 Plug 'junegunn/limelight.vim'          " Hyperfocus-writing in Vim
 
+""" Status Line
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
 
 """ Theme =======================================
 
-if !has('gui_running')
-  try
-    colorscheme mushroom
-    set background=dark
-  catch
-  endtry
-else
-  try
-    colorscheme slate
-    set background=dark
-  catch
-  endtry
-endif
+Plug 'mtglsk/mushroom'
+
+set background=dark
+colorscheme mushroom
 
 
 """ Version Control System ======================
@@ -150,5 +154,11 @@ Plug 'airblade/vim-gitgutter'          " Show git diff in the gutter
 Plug 'tpope/vim-fugitive'              " Git wrapper
 Plug 'tpope/vim-git'                   " Git integration
 Plug 'mattn/gist-vim'                  " Gist upload (GitHub)
+"
+" Something in here seems to be setting shiftwidth to 3
+" which makes for dumb looking Python code.
+set softtabstop=4
+set shiftwidth=4
+set expandtab
 
 call plug#end()
