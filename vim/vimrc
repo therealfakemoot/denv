@@ -43,6 +43,7 @@ nmap <silent> <leader>/ :nohlsearch<CR>
 
 """ Display =====================================
 
+set scrolloff=20
 set pastetoggle=<F2>
 set listchars=tab:\|.,trail:.,extends:#,nbsp:.
 
