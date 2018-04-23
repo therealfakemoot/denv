@@ -1,5 +1,7 @@
 " ~/.vimrc
 
+set t_BE=                              "Disable bracketed paste
+
 """ Vim-Plug ====================================
 
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -19,6 +21,9 @@ set noswapfile
 set termencoding=utf-8                 " UTF8 as default encoding
 set encoding=utf-8                     " ...
 
+" When using vimdiff, enable wordwrap.
+autocmd FilterWritePre * if &diff | setlocal wrap< | endif
+
 Plug 'tpope/vim-sensible'              " Sensible Defaults
 
 
@@ -32,10 +37,16 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Fold Mappings
+" set foldmethod=syntax
+" set foldnestmax=10
+" set nofoldenable
+" set foldlevel=0
+
 inoremap <leader>z <C-O>za
 nnoremap <leader>z za
 onoremap <leader>z <C-C>za
 vnoremap <leader>z zf
+
 
 " Use <leader>/ to clear search highlight
 nmap <silent> <leader>/ :nohlsearch<CR>
@@ -63,7 +74,11 @@ Plug 'benmills/vimux'                  " tmux Integration
 
 Plug 'mileszs/ack.vim'                 " Enhanced Grepping within Vim
   if executable('ag')
-    let g:ackprg = 'ag --vimgrep'
+    let g:ackprg = 'ag --vimgrep --smart-case'
+    cnoreabbrev ag Ack
+    cnoreabbrev aG Ack
+    cnoreabbrev Ag Ack
+    cnoreabbrev AG Ack
   endif
 
 Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
@@ -97,7 +112,16 @@ Plug 'scrooloose/syntastic'            " Syntax checking hacks for vim
 
   noremap <Leader>c :ccl <bar> lcl<CR>
 
+  let g:syntastic_enable_racket_racket_checker = 1
+
+" Set shiftwidth to 2 for html
+au BufNewFile,BufRead *.html set shiftwidth=2
+
+" Auto creates tags for Go source files.
+au BufWritePost *.go silent! !ctags -R &
+
 Plug 'fatih/vim-go'                    " Go development plugin for Vim
+  let $GOPATH = "/home/moot/.local/go"
   let g:syntastic_go_checkers = ['go', 'golint', 'errcheck', 'gov']
 
   let g:go_fmt_command = "gofmt"
@@ -130,6 +154,9 @@ Plug 'junegunn/vim-easy-align'         " Easier text alignment
   nmap ga <Plug>(EasyAlign)
 
 Plug 'ervandew/supertab'               " Vim insert mode completions with Tab
+let g:SuperTabDefaultCompletionType = "context"
+
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 Plug 'tpope/vim-surround'              " Quoting/Parenthesizing made simple
 Plug 'junegunn/limelight.vim'          " Hyperfocus-writing in Vim
 
