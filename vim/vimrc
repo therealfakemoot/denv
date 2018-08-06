@@ -114,6 +114,10 @@ Plug 'scrooloose/syntastic'            " Syntax checking hacks for vim
 
   let g:syntastic_enable_racket_racket_checker = 1
 
+  " JSX and Javascript linting
+  let g:syntastic_javascript_checkers=['eslint']
+
+
 " Set shiftwidth to 2 for html
 au BufNewFile,BufRead *.html set shiftwidth=2
 
@@ -137,6 +141,9 @@ Plug 'fatih/vim-go'                    " Go development plugin for Vim
   let g:go_highlight_build_constraints = 1
   let g:go_highlight_extra_types = 1
 
+
+" JSX Config
+Plug 'mxw/vim-jsx'
 
 """ Editor ======================================
 
