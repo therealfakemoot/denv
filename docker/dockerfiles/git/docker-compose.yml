@@ -1,0 +1,23 @@
+version: '2'
+services:
+        gogs:
+                image: "gogs/gogs:latest"
+                container_name: "gogs"
+                restart: always
+                ports:
+                        - "3000:3000"
+                volumes:
+                        - "./data/gogs:/data"
+                links:
+                        - "postgresql"
+
+        postgresql:
+                image: "postgres:latest"
+                container_name: "gogs-postgres"
+                restart: always
+                volumes:
+                        - "./data/postgresql:/var/lib/postgresql"
+                environment:
+                        - "DB_NAME=gogs"
+                        - "DB_USER=gogs"
+                        - "DB_PASS=changethis123"
