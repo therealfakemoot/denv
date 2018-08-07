@@ -96,28 +96,6 @@ Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
 
 Plug 'sheerun/vim-polyglot'            " Language Support
 
-
-Plug 'scrooloose/syntastic'            " Syntax checking hacks for vim
-  nmap <leader>c :SyntasticCheck<CR>
-  set statusline+=%#warningmsg#
-  set statusline+=%*
-  let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_auto_loc_list = 1
-  let g:syntastic_check_on_open = 0
-  let g:syntastic_check_on_wq = 0
-  let g:syntastic_error_symbol="S>"
-  let g:syntastic_style_error_symbol="E>"
-  let g:syntastic_warning_symbol="W>"
-  let g:syntastic_style_warning_symbol="W>"
-
-  noremap <Leader>c :ccl <bar> lcl<CR>
-
-  let g:syntastic_enable_racket_racket_checker = 1
-
-  " JSX and Javascript linting
-  let g:syntastic_javascript_checkers=['eslint']
-
-
 " Set shiftwidth to 2 for html
 au BufNewFile,BufRead *.html set shiftwidth=2
 
@@ -126,7 +104,7 @@ au BufWritePost *.go silent! !ctags -R &
 
 Plug 'fatih/vim-go'                    " Go development plugin for Vim
   let $GOPATH = "/home/moot/.local/go"
-  let g:syntastic_go_checkers = ['go', 'golint', 'errcheck', 'gov']
+  " let g:syntastic_go_checkers = ['go', 'golint', 'errcheck', 'gov']
 
   let g:go_fmt_command = "gofmt"
 
@@ -145,6 +123,32 @@ Plug 'fatih/vim-go'                    " Go development plugin for Vim
 " JSX Config
 Plug 'mxw/vim-jsx'
 
+" ALE
+Plug 'w0rp/ale'
+
+" Linter configuration
+let g:ale_linters = {'go': ['gometalinter', 'gofmt', 'govet']}
+let g:ale_fixers = {'javascript': ['eslint']}
+
+let g:ale_lint_on_enter = 1
+
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_sign_column_always = 1
+
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+
+let g:ale_list_window_size = 7
+
+
 """ Editor ======================================
 
 set list                               " Show whitespace
@@ -152,6 +156,9 @@ set ruler                              " Show line/cursor position
 set number                             " Show line numbers
 set wrap linebreak nolist
 autocmd BufWritePre * %s/\s\+$//e      " Delete trailing whitespace on save
+
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
+set list
 
 Plug 'tpope/vim-sleuth'                " Heuristically set buffer options
 Plug 'nathanaelkane/vim-indent-guides' " Visaully display indent level
