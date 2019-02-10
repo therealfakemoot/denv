@@ -31,10 +31,10 @@ Plug 'tpope/vim-sensible'              " Sensible Defaults
 
 let mapleader = ','
 
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
 
 " Fold Mappings
 " set foldmethod=syntax
@@ -94,7 +94,6 @@ Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
 
 """ Languages ===================================
 
-Plug 'sheerun/vim-polyglot'            " Language Support
 
 " Set shiftwidth to 2 for html
 au BufNewFile,BufRead *.html set shiftwidth=2
@@ -108,7 +107,9 @@ Plug 'fatih/vim-go'                    " Go development plugin for Vim
 
   let g:go_fmt_command = "gofmt"
 
-  let g:go_auto_type_info = 1
+  let g:go_auto_type_info = 0
+  let g:go_auto_sameids = 0
+  let g:go_doc_keywordprg_enabled = 0
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
   let g:go_highlight_types = 1
@@ -120,6 +121,9 @@ Plug 'fatih/vim-go'                    " Go development plugin for Vim
   let g:go_highlight_extra_types = 1
 
 
+Plug 'sheerun/vim-polyglot'            " Language Support
+let g:polyglot_disabled = ['go']
+
 " JSX Config
 Plug 'mxw/vim-jsx'
 
@@ -127,13 +131,14 @@ Plug 'mxw/vim-jsx'
 Plug 'w0rp/ale'
 
 " Linter configuration
-let g:ale_linters = {'go': ['gometalinter']}
+let g:ale_linters = {'javascript': ['eslint'], 'go': ['gometalinter']}
 
 " Fixer configuration
-let g:ale_fixers = {'javascript': ['eslint'],
-                   \'go': ['gofmt']}
+let g:ale_fixers = {'go': ['gofmt']}
 
 let g:ale_lint_on_enter = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 1
 
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
