@@ -103,13 +103,15 @@ au BufWritePost *.go silent! !ctags -R &
 
 Plug 'fatih/vim-go'                    " Go development plugin for Vim
   let $GOPATH = "/home/moot/.local/go"
-  " let g:syntastic_go_checkers = ['go', 'golint', 'errcheck', 'gov']
+
+  let g:go_def_mode='gopls'
+  let g:go_info_mode='gopls'
 
   let g:go_fmt_command = "gofmt"
 
-  let g:go_auto_type_info = 0
+  let g:go_auto_type_info = 1
   let g:go_auto_sameids = 0
-  let g:go_doc_keywordprg_enabled = 0
+  let g:go_doc_keywordprg_enabled = 1
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
   let g:go_highlight_types = 1
