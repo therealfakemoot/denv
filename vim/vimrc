@@ -58,10 +58,10 @@ set scrolloff=20
 set pastetoggle=<F2>
 set listchars=tab:\|.,trail:.,extends:#,nbsp:.
 
-Plug 'universal-ctags/ctags'           " ctags implementation
+" Plug 'universal-ctags/ctags'           " ctags implementation
 
-Plug 'majutsushi/tagbar'               " Displays tags in a window
-  nmap <F8> :TagbarToggle<CR>
+" Plug 'majutsushi/tagbar'               " Displays tags in a window
+" nmap <F8> :TagbarToggle<CR>
 
 
 """ Utilities ===================================
@@ -99,10 +99,10 @@ Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
 au BufNewFile,BufRead *.html set shiftwidth=2
 
 " Auto creates tags for Go source files.
-au BufWritePost *.go silent! !ctags -R &
+" au BufWritePost *.go silent! !ctags -R &
 
 Plug 'fatih/vim-go'                    " Go development plugin for Vim
-  let $GOPATH = "/home/moot/.local/go"
+  let g:go_bin_path = $HOME."/.local/go/bin"
 
   let g:go_def_mode='gopls'
   let g:go_info_mode='gopls'
@@ -110,7 +110,7 @@ Plug 'fatih/vim-go'                    " Go development plugin for Vim
   let g:go_fmt_command = "gofmt"
 
   let g:go_auto_type_info = 1
-  let g:go_auto_sameids = 0
+  let g:go_auto_sameids = 1
   let g:go_doc_keywordprg_enabled = 1
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
@@ -176,9 +176,6 @@ Plug 'junegunn/vim-easy-align'         " Easier text alignment
   xmap ga <Plug>(EasyAlign)
   nmap ga <Plug>(EasyAlign)
 
-Plug 'ervandew/supertab'               " Vim insert mode completions with Tab
-let g:SuperTabDefaultCompletionType = "context"
-
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 Plug 'tpope/vim-surround'              " Quoting/Parenthesizing made simple
 Plug 'junegunn/limelight.vim'          " Hyperfocus-writing in Vim
@@ -205,7 +202,7 @@ Plug 'airblade/vim-gitgutter'          " Show git diff in the gutter
 Plug 'tpope/vim-fugitive'              " Git wrapper
 Plug 'tpope/vim-git'                   " Git integration
 Plug 'mattn/gist-vim'                  " Gist upload (GitHub)
-"
+
 " Something in here seems to be setting shiftwidth to 3
 " which makes for dumb looking Python code.
 set softtabstop=4
