@@ -1,6 +1,7 @@
 " ~/.vimrc
 
 set t_BE=                              "Disable bracketed paste
+set t_Co=256
 
 """ Vim-Plug ====================================
 
@@ -26,6 +27,9 @@ autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 
 Plug 'tpope/vim-sensible'              " Sensible Defaults
 
+
+" autocomplete stuff
+set completeopt+=noinsert " this is to address an annoyance with ALE's auto complete being overzealous
 
 """ Input =======================================
 
@@ -58,7 +62,7 @@ set scrolloff=20
 set pastetoggle=<F2>
 set listchars=tab:\|.,trail:.,extends:#,nbsp:.
 
-" Plug 'universal-ctags/ctags'           " ctags implementation
+Plug 'universal-ctags/ctags'           " ctags implementation
 
 " Plug 'majutsushi/tagbar'               " Displays tags in a window
 " nmap <F8> :TagbarToggle<CR>
@@ -66,8 +70,6 @@ set listchars=tab:\|.,trail:.,extends:#,nbsp:.
 
 """ Utilities ===================================
 
-Plug 'spolu/dwm.vim'                   " Tiled Window Management
-Plug 'Shougo/vimfiler.vim'             " Powerful file explorer
 Plug 'tpope/vim-eunuch'                " Helpers for UNIX
 Plug 'tpope/vim-dispatch'              " Async Build/Test
 Plug 'benmills/vimux'                  " tmux Integration
@@ -91,7 +93,6 @@ Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
   \ }
   let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
-
 """ Languages ===================================
 
 
@@ -101,26 +102,31 @@ au BufNewFile,BufRead *.html set shiftwidth=2
 " Auto creates tags for Go source files.
 " au BufWritePost *.go silent! !ctags -R &
 
-Plug 'fatih/vim-go'                    " Go development plugin for Vim
-  let g:go_bin_path = $HOME."/.local/go/bin"
+" au BufWritePost *.pp silent! !puppet-lint -f <afile>| redraw!
+" au BufWritePost *.pp silent !puppet-lint -f <afile>
 
-  let g:go_def_mode='gopls'
-  let g:go_info_mode='gopls'
+Plug 'rodjek/vim-puppet'
 
-  let g:go_fmt_command = "gofmt"
-
-  let g:go_auto_type_info = 1
-  let g:go_auto_sameids = 1
-  let g:go_doc_keywordprg_enabled = 1
-  let g:go_highlight_functions = 1
-  let g:go_highlight_methods = 1
-  let g:go_highlight_types = 1
-  let g:go_highlight_fields = 1
-  let g:go_highlight_structs = 1
-  let g:go_highlight_interfaces = 1
-  let g:go_highlight_operators = 1
-  let g:go_highlight_build_constraints = 1
-  let g:go_highlight_extra_types = 1
+"Plug 'fatih/vim-go'                    " Go development plugin for Vim
+"  let g:go_bin_path = $HOME."/.local/go/bin"
+"
+"  let g:go_def_mode='gopls'
+"  let g:go_info_mode='gopls'
+"
+"  let g:go_fmt_command = "gofmt"
+"
+"  let g:go_auto_type_info = 1
+"  let g:go_auto_sameids = 1
+"  let g:go_doc_keywordprg_enabled = 1
+"  let g:go_highlight_functions = 1
+"  let g:go_highlight_methods = 1
+"  let g:go_highlight_types = 1
+"  let g:go_highlight_fields = 1
+"  let g:go_highlight_structs = 1
+"  let g:go_highlight_interfaces = 1
+"  let g:go_highlight_operators = 1
+"  let g:go_highlight_build_constraints = 1
+"  let g:go_highlight_extra_types = 1
 
 
 Plug 'sheerun/vim-polyglot'            " Language Support
@@ -129,14 +135,26 @@ let g:polyglot_disabled = ['go']
 " JSX Config
 Plug 'mxw/vim-jsx'
 
+" Terraform config
+Plug 'hashivim/vim-terraform'
+let g:terraform_align=1
+let g:terraform_remap_spacebar=1
+let g:terraform_fmt_on_save=1
+
 " ALE
 Plug 'w0rp/ale'
 
 " Linter configuration
-let g:ale_linters = {'javascript': ['eslint'], 'go': ['gometalinter']}
+let g:ale_linters = {'javascript': ['eslint'], 'go': ['gopls','gometalinter']}
 
 " Fixer configuration
-let g:ale_fixers = {'go': ['gofmt']}
+let g:ale_fixers = {'go': ['gofmt'], 'puppet': ['puppetlint']}
+
+let g:ale_fix_on_save = 1
+
+let g:ale_puppet_puppetlint_options = '--no-class_inherits_from_params_class-check --no-140chars-check --no-autoloader_layout-check'
+
+let g:ale_completion_enabled = 1
 
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_save = 1
@@ -188,9 +206,11 @@ Plug 'vim-airline/vim-airline-themes'
 """ Theme =======================================
 
 Plug 'mtglsk/mushroom'
+Plug 'Nequo/vim-allomancer'
 
+set termguicolors "Remove this in urxvt
 set background=dark
-colorscheme mushroom
+colorscheme allomancer
 
 
 """ Version Control System ======================
