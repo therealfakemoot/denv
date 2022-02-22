@@ -107,28 +107,6 @@ au BufNewFile,BufRead *.html set shiftwidth=2
 
 Plug 'rodjek/vim-puppet'
 
-"Plug 'fatih/vim-go'                    " Go development plugin for Vim
-"  let g:go_bin_path = $HOME."/.local/go/bin"
-"
-"  let g:go_def_mode='gopls'
-"  let g:go_info_mode='gopls'
-"
-"  let g:go_fmt_command = "gofmt"
-"
-"  let g:go_auto_type_info = 1
-"  let g:go_auto_sameids = 1
-"  let g:go_doc_keywordprg_enabled = 1
-"  let g:go_highlight_functions = 1
-"  let g:go_highlight_methods = 1
-"  let g:go_highlight_types = 1
-"  let g:go_highlight_fields = 1
-"  let g:go_highlight_structs = 1
-"  let g:go_highlight_interfaces = 1
-"  let g:go_highlight_operators = 1
-"  let g:go_highlight_build_constraints = 1
-"  let g:go_highlight_extra_types = 1
-
-
 Plug 'sheerun/vim-polyglot'            " Language Support
 let g:polyglot_disabled = ['go']
 

@@ -2,7 +2,7 @@
 
 ### Settings #####################################
 
-ZSH=/home/$(whoami)/.oh-my-zsh
+ZSH=/Users/$(whoami)/.oh-my-zsh
 
 if [ ! -d $ZSH ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -11,8 +11,9 @@ fi
 ZSH_THEME="risto"
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git go man)
+plugins=(git go man docker docker-compose zsh-kubectl-prompt)
 source $ZSH/oh-my-zsh.sh
+source $HOME/.nix-profile/etc/profile.d/nix.sh
 
 if [ -n $TMUX ]; then
       unset zle_bracketed_paste
@@ -30,17 +31,17 @@ TERM="xterm-256color"
 ### Programming Languages ########################
 
 export GOPATH="$HOME/.local/go"
-export GOROOT="$HOME/go"
+export GOROOT="/usr/local/go"
 export GOBIN="$GOROOT/bin"
 
-PROGPATH="$GOPATH/bin"
+export PYBIN="$HOME/Library/Python/3.9/bin"
 
 
 ### Paths ########################################
 
 GLOBALPATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 LOCALPATH="$HOME/.local/bin:$HOME/.bin:$HOME/bin"
-PATH="$GLOBALPATH:$LOCALPATH:$PROGPATH:$GOBIN"
+PATH="$GLOBALPATH:$LOCALPATH:$GOBIN:$PYBIN:/Users/dumasn/.local/go/bin:/opt/puppetlabs/bin"
 
 
 ### Exports ######################################
@@ -49,6 +50,28 @@ export PATH GOPATH EDITOR LANG TERM ZSH
 
 
 ### Alias ########################################
+
+# kubectl stuff
+#
+## kube
+alias ke="kubectl --kubeconfig=/Users/dumasn/.kube/config-exp"
+alias ks="kubectl --kubeconfig=~/Users/dumasn/.kube/config-stg"
+alias kd="kubectl --kubeconfig=~/Users/dumasn/.kube/config-dev"
+
+alias kubectl="kubectl --kubeconfig ~/.kube/config-all"
+alias recent_node_ips="kubectl get node --sort-by=.metadata.creationTimestamp -o jsonpath='{ $.items[*].status.addresses[?(@.type==\"InternalIP\")].address }'|tr ' ' '\n'"
+alias recent_nodes="kubectl get node --sort-by=.metadata.creationTimestamp -o jsonpath='{ $.items[*].spec.externalID}'|tr ' ' '\n'"
+alias get_events="kubectl get event --field-selector involvedObject.name=$1"
+
+
+## puppet stuff
+alias pl="puppet-lint --no-class_inherits_from_params_class-check --with-filename --no-140chars-check"
+
+# Auto-generated completion for kubectl
+source ~/.kube-completion
+
+if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+
 
 ## cp
 alias cp="cp -ip"
@@ -74,7 +97,7 @@ alias free="free -h"
 case "$OSTYPE" in
     linux*)
         alias ls='ls --group-directories-first --color=auto -F'
-	alias lss='-hSF --group-directories-first --color=auto'
+        alias lss='-hSF --group-directories-first --color=auto'
         alias ll='ls --color -Fahl'
         ;;
     freebsd*)
@@ -123,7 +146,38 @@ mkcd() {
 }
 
 weather() {
-    curl http://wttr.in/$1
+    curl http://wttr.in/$1?format='%l: +%c %o %m'
 }
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+
+ export PROMPT="%{$fg[green]%}%n@%m:%{$fg_bold[blue]%}%2~ %{$reset_color%}%(!.#.$) "
+
+function kctl_prompt_info ()
+{
+    ctx=$(kubectl config current-context)
+
+    if [[ $ctx = "dev" ]]
+    then
+        ctx_prompt_color="green";
+    fi
+
+    if [[ $ctx = "stg" ]]
+    then
+        ctx_prompt_color="yellow";
+    fi
+
+    if [[ $ctx = "ind" ]] || [[ $ctx = "pit" ]]
+    then
+        ctx_prompt_color="red";
+    fi
+    echo "𝕂:(%{$fg[$ctx_prompt_color]%}$ctx%{$reset_color%})"
+}
+
+# export RPROMPT="𝔾:($(git_prompt_info)) $(kctl_prompt_info)"
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /Users/dumasn/.local/bin/terraform terraform
+
+source /Users/dumasn/.config/broot/launcher/bash/br
