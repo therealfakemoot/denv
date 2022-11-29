@@ -4,6 +4,7 @@
 
 ZSH=/Users/$(whoami)/.oh-my-zsh
 
+
 if [ ! -d $ZSH ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 fi
@@ -13,7 +14,7 @@ COMPLETION_WAITING_DOTS="true"
 
 plugins=(git go man docker docker-compose zsh-kubectl-prompt)
 source $ZSH/oh-my-zsh.sh
-source $HOME/.nix-profile/etc/profile.d/nix.sh
+# source $HOME/.nix-profile/etc/profile.d/nix.sh
 
 if [ -n $TMUX ]; then
       unset zle_bracketed_paste
@@ -27,6 +28,10 @@ LANG="en_US.UTF-8"
 SHELL="$(which zsh)"
 TERM="xterm-256color"
 
+# vim binding mode
+bindkey -v
+## Reverse history serach on ctrl+R
+bindkey "^R" history-incremental-search-backward
 
 ### Programming Languages ########################
 
@@ -51,14 +56,16 @@ export PATH GOPATH EDITOR LANG TERM ZSH
 
 ### Alias ########################################
 
+# eksctl
+alias neksctl="AWS_PROFILE=nickd eksctl"
+
 # kubectl stuff
 #
 ## kube
-alias ke="kubectl --kubeconfig=/Users/dumasn/.kube/config-exp"
-alias ks="kubectl --kubeconfig=~/Users/dumasn/.kube/config-stg"
-alias kd="kubectl --kubeconfig=~/Users/dumasn/.kube/config-dev"
+alias kdo="kubectl --kubeconfig do-cluster-kubeconfig.yaml"
 
-alias kubectl="kubectl --kubeconfig ~/.kube/config-all"
+# alias kubectl="kubectl --kubeconfig ~/.kube/config-all"
+alias kubectl="kubectl --kubeconfig ~/.kube/homes-k8s-conf"
 alias recent_node_ips="kubectl get node --sort-by=.metadata.creationTimestamp -o jsonpath='{ $.items[*].status.addresses[?(@.type==\"InternalIP\")].address }'|tr ' ' '\n'"
 alias recent_nodes="kubectl get node --sort-by=.metadata.creationTimestamp -o jsonpath='{ $.items[*].spec.externalID}'|tr ' ' '\n'"
 alias get_events="kubectl get event --field-selector involvedObject.name=$1"
@@ -154,30 +161,12 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
  export PROMPT="%{$fg[green]%}%n@%m:%{$fg_bold[blue]%}%2~ %{$reset_color%}%(!.#.$) "
 
-function kctl_prompt_info ()
-{
-    ctx=$(kubectl config current-context)
-
-    if [[ $ctx = "dev" ]]
-    then
-        ctx_prompt_color="green";
-    fi
-
-    if [[ $ctx = "stg" ]]
-    then
-        ctx_prompt_color="yellow";
-    fi
-
-    if [[ $ctx = "ind" ]] || [[ $ctx = "pit" ]]
-    then
-        ctx_prompt_color="red";
-    fi
-    echo "𝕂:(%{$fg[$ctx_prompt_color]%}$ctx%{$reset_color%})"
-}
-
-# export RPROMPT="𝔾:($(git_prompt_info)) $(kctl_prompt_info)"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /Users/dumasn/.local/bin/terraform terraform
 
 source /Users/dumasn/.config/broot/launcher/bash/br
+
+# Add JBang to environment
+alias j!=jbang
+export PATH="$HOME/.jbang/bin:$PATH"
