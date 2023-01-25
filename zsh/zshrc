@@ -2,19 +2,8 @@
 
 ### Settings #####################################
 
-ZSH=/Users/$(whoami)/.oh-my-zsh
-
-
-if [ ! -d $ZSH ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-fi
-
-ZSH_THEME="risto"
-COMPLETION_WAITING_DOTS="true"
-
-plugins=(git go man docker docker-compose zsh-kubectl-prompt)
-source $ZSH/oh-my-zsh.sh
-# source $HOME/.nix-profile/etc/profile.d/nix.sh
+# ZSH_THEME="risto"
+# COMPLETION_WAITING_DOTS="true"
 
 if [ -n $TMUX ]; then
       unset zle_bracketed_paste
@@ -23,14 +12,18 @@ fi
 
 ### Defaults #####################################
 
-EDITOR="vim"
-LANG="en_US.UTF-8"
-SHELL="$(which zsh)"
-TERM="xterm-256color"
+export EDITOR="vim"
+export VISUAL="vim"
+export LANG="en_US.UTF-8"
+export SHELL="$(which zsh)"
+export TERM="xterm-256color"
+export HISTSIZE=10000
+export SAVEHIST=10000
 
 # vim binding mode
 bindkey -v
 ## Reverse history serach on ctrl+R
+## necessary in vi mode
 bindkey "^R" history-incremental-search-backward
 
 ### Programming Languages ########################
@@ -75,10 +68,12 @@ alias get_events="kubectl get event --field-selector involvedObject.name=$1"
 alias pl="puppet-lint --no-class_inherits_from_params_class-check --with-filename --no-140chars-check"
 
 # Auto-generated completion for kubectl
-source ~/.kube-completion
+# source ~/.kube-completion
 
-if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+# if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
 
+## ls
+alias ls="ls --color"
 
 ## cp
 alias cp="cp -ip"
@@ -159,14 +154,15 @@ weather() {
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 
- export PROMPT="%{$fg[green]%}%n@%m:%{$fg_bold[blue]%}%2~ %{$reset_color%}%(!.#.$) "
+export PROMPT="%{$fg[green]%}%n@%m:%{$fg_bold[blue]%}%2~ %{$reset_color%}%(!.#.$) "
 
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /Users/dumasn/.local/bin/terraform terraform
+_comp_options+=(globdots) # With hidden files
+# complete -o nospace -C /Users/dumasn/.local/bin/terraform terraform
 
-source /Users/dumasn/.config/broot/launcher/bash/br
+# source /Users/dumasn/.config/broot/launcher/bash/br
 
 # Add JBang to environment
-alias j!=jbang
-export PATH="$HOME/.jbang/bin:$PATH"
+# alias j!=jbang
+# export PATH="$HOME/.jbang/bin:$PATH"
