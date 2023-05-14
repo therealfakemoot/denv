@@ -74,24 +74,23 @@ Plug 'tpope/vim-eunuch'                " Helpers for UNIX
 Plug 'tpope/vim-dispatch'              " Async Build/Test
 Plug 'benmills/vimux'                  " tmux Integration
 
-Plug 'mileszs/ack.vim'                 " Enhanced Grepping within Vim
-  if executable('ag')
-    let g:ackprg = 'ag --vimgrep --smart-case'
-    cnoreabbrev ag Ack
-    cnoreabbrev aG Ack
-    cnoreabbrev Ag Ack
-    cnoreabbrev AG Ack
-  endif
 
-Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy file/buffer/mru/tag/etc finder
-  let g:ctrlp_map = '<c-p>'
-  let g:ctrlp_cmd = 'CtrlP'
-  let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-    \ 'file': '\v\.(exe|so|dll|pyc|pyo)$',
-    \ 'link': 'some_bad_symbolic_links',
-  \ }
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" fzf and searching
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" If installed using Homebrew
+set rtp+=/usr/local/opt/fzf
+
+" fuzzy search by filename
+" but it errors out if i'm not in a git repo
+nnoremap <C-p> :GFiles<cr>
+" Fallback non-git search
+nnoremap <C-S-p> :Files<cr>
+" fuzzy search with ag
+nnoremap <C-g> :Ag<Cr>
+
 
 """ Languages ===================================
 
@@ -116,20 +115,14 @@ let g:polyglot_disabled = ['go']
 " JSX Config
 Plug 'mxw/vim-jsx'
 
-" Terraform config
-Plug 'hashivim/vim-terraform'
-let g:terraform_align=1
-let g:terraform_remap_spacebar=1
-let g:terraform_fmt_on_save=1
-
 " ALE
 Plug 'w0rp/ale'
 
 " Linter configuration
-let g:ale_linters = {'javascript': ['eslint'], 'go': ['gopls','gometalinter']}
+let g:ale_linters = {'javascript': ['eslint'], 'go': ['gopls','gometalinter'], 'terraform': ['terraform', 'tflint']}
 
 " Fixer configuration
-let g:ale_fixers = {'go': ['gofmt'], 'puppet': ['puppetlint']}
+let g:ale_fixers = {'go': ['gofmt'], 'puppet': ['puppetlint'], 'terraform': ['terraform']}
 
 let g:ale_fix_on_save = 1
 
@@ -189,9 +182,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'mtglsk/mushroom'
 Plug 'Nequo/vim-allomancer'
 
-set termguicolors "Remove this in urxvt
+" set termguicolors "Remove this in urxvt
 set background=dark
-colorscheme allomancer
+colorscheme monokai
 
 
 """ Version Control System ======================
