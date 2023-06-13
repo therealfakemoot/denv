@@ -46,6 +46,8 @@ let mapleader = ','
 " set nofoldenable
 " set foldlevel=0
 
+set conceallevel=0
+
 inoremap <leader>z <C-O>za
 nnoremap <leader>z za
 onoremap <leader>z <C-C>za
@@ -54,6 +56,9 @@ vnoremap <leader>z zf
 
 " Use <leader>/ to clear search highlight
 nmap <silent> <leader>/ :nohlsearch<CR>
+" Use <leader>> and <leader>< to jump between ALE errors
+nmap <silent> <leader>> :ALENextWrap<CR>
+nmap <silent> <leader>< :ALEPreviousWrap<CR>
 
 
 """ Display =====================================
@@ -98,6 +103,13 @@ nnoremap <C-g> :Ag<Cr>
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 autocmd FileType yml setlocal ts=2 sts=2 sw=2 expandtab
 
+" Fix auto-indentation for YAML files
+augroup yaml_fix
+    autocmd!
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
+augroup END
+
+
 " Set shiftwidth to 2 for html
 au BufNewFile,BufRead *.html set shiftwidth=2
 
@@ -119,10 +131,16 @@ Plug 'mxw/vim-jsx'
 Plug 'w0rp/ale'
 
 " Linter configuration
-let g:ale_linters = {'javascript': ['eslint'], 'go': ['gopls','gometalinter'], 'terraform': ['terraform', 'tflint']}
+let g:ale_linters = {
+      \ 'javascript': ['eslint'],
+      \ 'go': ['gopls', 'golangci-lint'],
+      \ 'terraform': ['terraform', 'tflint'],
+      \ 'markdown':['mdl','write-good', 'proselint'],
+      \ 'yaml':['yaml-language-server']
+      \ }
 
 " Fixer configuration
-let g:ale_fixers = {'go': ['gofmt'], 'puppet': ['puppetlint'], 'terraform': ['terraform']}
+let g:ale_fixers = {'*':['remove_trailing_lines', 'trim_whitespace'],'go': ['gofmt', 'gofumpt'], 'puppet': ['puppetlint'], 'terraform': ['terraform']}
 
 let g:ale_fix_on_save = 1
 
@@ -136,6 +154,19 @@ let g:ale_lint_on_text_changed = 1
 
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
+
+let g:ale_go_golangci_lint_options = '--enable-all --disable "depguard,varnamelen,interfacer,ifshort,exhaustivestruct,maligned,varcheck,scopelint,structcheck,deadcode,nosnakecase,golint" --timeout=30s --tests'
+
+let g:ale_yaml_ls_config = {
+      \ 'yaml': {
+      \ 'schemastore': {
+      \   'enable': v:true
+      \ },
+      \ 'schemas': {
+      \   'https://json.schemastore.org/drone.json': '.drone.yml',
+      \ }
+      \ }
+      \ }
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -184,7 +215,7 @@ Plug 'Nequo/vim-allomancer'
 
 " set termguicolors "Remove this in urxvt
 set background=dark
-colorscheme monokai
+colorscheme slate
 
 
 """ Version Control System ======================
